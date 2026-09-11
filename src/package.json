@@ -49,7 +49,7 @@
     "@types/node-cache": "4.2.5",
     "@types/node-telegram-bot-api": "0.64.15",
     "@types/winston": "2.4.4",
-    "@typescript-eslint/parser": "8.64.0",
+    "@typescript-eslint/parser": "8.70.0",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "@vitest/coverage-v8": "4.1.11",
     "eslint": "10.7.0",
