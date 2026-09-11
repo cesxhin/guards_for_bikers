@@ -79,7 +79,8 @@ const detectRainPlugin: Plugin = {
         const xAxis = chart.scales["xEmoji"];
         const { top, bottom } = chart.chartArea;
 
-        const width = 90;
+        const WIDTH_ICON = 80;
+        const ANGLE = 60;
 
         if (_.isNil(xAxis)){
             return;
@@ -90,35 +91,35 @@ const detectRainPlugin: Plugin = {
         
             const actualWeather = options.dataWeather[index];
 
-            if (!_.isNil(actualWeather) && actualWeather.startsWith("1")){
+            if (!_.isNil(actualWeather) && !actualWeather.startsWith("0")){
 
                 ctx.save();
                 
                 ctx.strokeStyle ="rgba(0, 162, 255, 0.7)";
                 ctx.lineWidth = 4;
-                
 
                 ctx.beginPath();
                 ctx.rect(
-                    x - (width / 2),
+                    x - (WIDTH_ICON / 2),
                     top,
-                    width,
+                    WIDTH_ICON,
                     bottom - top
                 );
                 ctx.clip();
 
-                // linee diagonali
-                for (let y = top - width; y < bottom + width; y += 20) {
+                for (let y = top - WIDTH_ICON; y < bottom; y += actualWeather.startsWith("1")? 40 : 20) {
+                    console.log(y, bottom);
+                    
                     ctx.beginPath();
-
+                    
                     ctx.moveTo(
-                        (x - width) / 2,
+                        x - (WIDTH_ICON / 2),
                         y
                     );
 
                     ctx.lineTo(
-                        (x + width) / 2,
-                        y + width
+                        x + (WIDTH_ICON / 2),
+                        y + ANGLE
                     );
 
                     ctx.stroke();

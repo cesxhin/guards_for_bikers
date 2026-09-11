@@ -1,16 +1,52 @@
+import { MAX_RETRY_COUNT } from "../../env.ts";
+
 import _ from "lodash";
 import { DateTime } from "luxon";
 
+import Logger from "../../lib/logger.ts";
 import graphUtils from "../../utils/graphUtils.ts";
 import { IGroup } from "../../domains/interfaces/IGroup.ts";
 import { IForecast } from "../../domains/interfaces/api/IForecast.ts";
 import { WeatherRepository } from "../repository/weatherRepository.ts";
 
+const logger = Logger("weather-service");
+
 export class WeatherService {
     private weatherRepository = new WeatherRepository();
 
-    async get(group: Pick<IGroup, "start_time_guardian" | "end_time_guardian" | "timezone" | "latitude" | "longitude">): Promise<{ weather: IForecast, image: Buffer }> {
-        const weather = await this.weatherRepository.get(group.latitude, group.longitude);
+    async get(group: Pick<IGroup, "start_time_guardian" | "end_time_guardian" | "timezone" | "latitude" | "longitude" | "id">): Promise<{ weather: IForecast, image: Buffer }> {
+        let weather: IForecast | null = null;
+
+        let retry = 0;
+        let error = false;
+        do {
+            if (retry >= MAX_RETRY_COUNT && error){
+                break;
+            }
+
+            if (error){
+                retry++;
+                logger.warn(`I'll try again for the ${MAX_RETRY_COUNT - (retry - 1)} time for group id: ${group.id}, waiting ${retry * 5} seconds...`);
+                await new Promise((resolve) => setTimeout(resolve, 5000 * retry));
+            }
+            
+            try {
+                weather = await this.weatherRepository.get(group.latitude, group.longitude);
+            } catch(err){
+                logger.error(`Error get weather for group id: ${group.id}, details:`, err);
+                error = true;
+                continue;
+            }
+
+            error = false;
+        } while ( error );
+
+        console.log(weather);
+        
+
+        if (_.isNil(weather)){
+            throw new Error("Impossible get information weather, it's aborted operation for group id: " + group.id);
+        }
 
         //create message
         let onlyTime: string;
