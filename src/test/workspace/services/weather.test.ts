@@ -23,7 +23,7 @@ describe("location-serivce", () => {
                 } satisfies IForecast
             });
 
-            await expect(weatherService.get({latitude: 0, longitude: 0, start_time_guardian: "00:00", end_time_guardian: "23:59", timezone: ""})).resolves.toBeDefined();
+            await expect(weatherService.get({latitude: 0, longitude: 0, start_time_guardian: "00:00", end_time_guardian: "23:59", timezone: "", id: 1})).resolves.toBeDefined();
         });
 
         it("not found weather", async () => {
@@ -33,7 +33,7 @@ describe("location-serivce", () => {
                 }
             });
 
-            await expect(weatherService.get({latitude: 0, longitude: 0, start_time_guardian: "00:00", end_time_guardian: "23:59", timezone: ""})).rejects.toThrow();
+            await expect(weatherService.get({latitude: 0, longitude: 0, start_time_guardian: "00:00", end_time_guardian: "23:59", timezone: "", id: 1})).rejects.toThrow();
         });
     });
 });

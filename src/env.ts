@@ -49,3 +49,6 @@ export const POLLS_CACHE_CHECK_PERIOD = parseInt(process.env.POLLS_CACHE_CHECK_P
 export const EVENT_EXPIRE_QUESTION_SECONDS = parseInt(process.env.EVENT_EXPIRE_QUESTION_SECONDS || "") || 3600 * 2; //2 hour
 export const POLL_EXPIRE_ACTION_SECONDS = parseInt(process.env.POLL_EXPIRE_ACTION_SECONDS || "") || 3600 * 2; //2 hour
 export const POLLS_EXPIRE_IMPOSTOR_SECONDS = parseInt(process.env.POLLS_EXPIRE_IMPOSTOR_SECONDS || "") || 3600 * 10; //10 hour
+
+// -- API WEATHER --
+export const MAX_RETRY_COUNT = parseInt(process.env.MAX_RETRY_COUNT || "") || 10;
