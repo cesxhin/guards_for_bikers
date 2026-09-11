@@ -4,6 +4,12 @@ import { expect, it, vi, describe } from "vitest";
 import { IForecast } from "../../../domains/interfaces/api/IForecast.ts";
 import { WeatherService } from "../../../applications/services/weatherService.ts";
 
+vi.mock(import("../../../env.ts"), () => {
+    return {
+        MAX_RETRY_COUNT: 0
+    };
+});
+
 vi.mock("axios");
 const mockedAxios = vi.mocked(axios);
 
@@ -27,6 +33,7 @@ describe("location-serivce", () => {
         });
 
         it("not found weather", async () => {
+
             mockedAxios.get.mockRejectedValue({
                 response: {
                     status: 404

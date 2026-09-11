@@ -20,7 +20,7 @@ export class WeatherService {
         let retry = 0;
         let error = false;
         do {
-            if (retry >= MAX_RETRY_COUNT){
+            if (retry >= MAX_RETRY_COUNT && error){
                 break;
             }
 
@@ -40,6 +40,9 @@ export class WeatherService {
 
             error = false;
         } while ( error );
+
+        console.log(weather);
+        
 
         if (_.isNil(weather)){
             throw new Error("Impossible get information weather, it's aborted operation for group id: " + group.id);
